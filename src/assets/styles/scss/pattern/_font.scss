@@ -1,0 +1,14 @@
+
+body {
+    font-size: 18px;
+    font-family: 'Courier New', Courier, monospace;
+};
+
+@mixin enter-todo {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 12px;
+    letter-spacing: -0.1666666716337204px;
+    text-align: left;
+}
