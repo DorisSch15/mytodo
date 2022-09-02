@@ -1,14 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>my todo's</title>
+    <script src="https://kit.fontawesome.com/d59b2c091e.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <include src="./partials/header.html"></include>
-    <h1>Some header</h1>
-    <include src="./partials/footer.html"></include>    
+    <div class="wrapper">
+        <include src="./partials/header.html"></include>
+        <main class="todo">
+          <form action="" class="todo__form">
+            <input class="todo__form-input" type="text">
+          </form>
+          <ul class="todo__list">
+          </ul>
+          <div class="todo__update--mob todo__update--desktop">
+            <div class="todo__update-left"># items left</div>
+            <div class="todo__update-clear">Clear Completed</div>
+          </div>
+          <div class="todo__show">
+            <div class="todo__show-all">All</div>
+            <div class="todo__show-active">Active</div>
+            <div class="todo__show-completed">Completed</div>
+          </div>
+        </main>
+        <include src="./partials/footer.html"></include>
+      </div>
 </body>
 </html>
