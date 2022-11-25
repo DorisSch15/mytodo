@@ -1,13 +1,25 @@
 import './../assets/styles/scss/main.scss';
 
-// getting list and input
+// getting list and input, etc.
 
 let todoList = document.querySelector('.todo__list');
 let todoInput = document.querySelector('.todo__form-input');
 let todoForm = document.querySelector('.todo__form');
-let newTodo;
-let todosArchiv;
-let index = 0;
+let todos = [
+    {
+        // id: 1, brauchts nicht, da jedes Mal hinzugefügt durch render()
+        task: "wäsche waschen",
+        completed: 0,
+    }, {
+        task: "essen",
+        completed: 1,
+    }, {
+        task: "lernen",
+        completed: 0,
+    }
+];
+
+render();
 
 // adding eventListener
 
@@ -27,19 +39,14 @@ function createNewTodo(e){
     // if input is empty
 
     if(!newTodo.match(/^\s*$/)){
-
-        // input in Liste ausgeben
-        let li = document.createElement('li');
-        li.classList.add('.todo__list-item');
-        li.id = index;
-        index += 1;
-        li.innerHTML = `<div class="todo__item-checkbox"></div>
-        <input type="checkbox" checked="checked">
-        <span class="todo__item-text">${newTodo}</span><button>X</button>`;
-        todoList.appendChild(li);
+        todos.push({
+            task: newTodo,
+            completed: 0,
+        });
+        render();
 
         // localStorage saven
-        saveLocalStorage(newTodo);
+        saveLocalStorage();
     
         // Input leeren
         todoInput.value = '';
@@ -47,49 +54,56 @@ function createNewTodo(e){
 };
 
 function removeTodo(event){
-
     let target = event.target;
-    console.log(target.parentNode.id)
-    if(target && target.matches('li button')){
+    // console.log(target.parentNode.id);
 
-        target.parentNode.remove(target);
-        todosArchiv.splice(target.parentNode.id, 1)
-        localStorage.setItem('todoArchiv', JSON.stringify(todosArchiv));
+    if(target && target.matches('li button')){ // matches id ??
+        // target.parentNode.remove(target); brauchts nicht, wird durch render neu geladen
+        todos.splice(target.parentNode.id, 1)
+        saveLocalStorage();
+        render();
     }
 };
 
-function saveLocalStorage(newTodo){
-    if(localStorage.getItem('todoArchiv') === null){
-        todosArchiv = [];
-    } else {
-        todosArchiv = JSON.parse(localStorage.getItem('todoArchiv'));
-    }
+function changeStatus(box){
+    let checkBox = document.querySelector
+    if(checked === 0){
 
-    todosArchiv.push(newTodo);
-    localStorage.setItem('todoArchiv', JSON.stringify(todosArchiv));
+    }
+    
+    // if bedingung wenn item === checked dann completed auf 1 setzen
+    // completed muss in array gepushed werden (update)
 }
+
+function saveLocalStorage(){
+        localStorage.setItem('todoArchiv', JSON.stringify(todos));
+};
 
 function loadTodos(){
-    if(localStorage.getItem('todoArchiv') === null){
-        todosArchiv = [];
-    } else {
-        todosArchiv = JSON.parse(localStorage.getItem('todoArchiv'));
-
-        // adding existing todos
-        for(let todo of todosArchiv){
-            let li = document.createElement('li');
-            li.classList.add('.todo__list-item');
-            li.id = index;
-            index += 1;
-            li.innerHTML = `<div class="todo__item-checkbox"></div>
-            <input type="checkbox" checked="checked">
-            <span class="todo__item-text">${todo}</span><button>X</button>`;
-            todoList.appendChild(li);
-        }
+    if(localStorage.getItem('todoArchiv') !== null){
+        todos = JSON.parse(localStorage.getItem('todoArchiv'));
+        // render funktion einfügen
+        render();
 
     }
+};
 
-    
-    
+function render(){
+    todoList.innerHTML = '';
+    let index = 0; // damit er immer wieder von vorne anfängt
 
-}
+    for(let todo of todos){
+        let checked = '';
+        if(todo.completed === 1){
+            checked = 'checked="checked"';
+        }
+        let li = document.createElement('li');
+        li.classList.add('.todo__list-item');
+        li.id = index;
+        index += 1;
+        li.innerHTML = `<span class="todo__item-checkbox"></span>
+        <input type="checkbox" ${checked}>
+        <span class="todo__item-text">${todo.task}</span><button>X</button>`;
+        todoList.appendChild(li);
+    };
+};
